@@ -32,10 +32,10 @@ tags:
       description: Deskripsi dan Kode Program
       url: https://github.com/rofinafiin/UsersBackend
 paths:
-  /RegisterUser:
+  /RegisterGeo:
     post:
       tags:
-        - Users
+        - register
       summary: Register User Without Token
       description: Daftar Akun User
       operationId: authService
@@ -53,7 +53,7 @@ paths:
                 $ref: '#/components/schemas/Response'
         '405':
           description: Invalid input
-  /Login:
+  /LoginGeo:
     post:
       tags:
         - auth
@@ -74,14 +74,39 @@ paths:
                 $ref: '#/components/schemas/AuthResponse'
         '405':
           description: Invalid input
+  /Updategeo:
+    put:
+      tags:
+        - data
+      summary: Update data geo
+      description: Update data nama by volume geo
+      operationId: authService
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/bodycord'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '405':
+          description: Invalid input          
+      security:
+        - Login:
+          - write:apiKey
+          - read:apiKey
 
-  /GetUserWithToken:
+  /GetAllgeojson:
     get:
       tags:
-        - Users
-      summary: Get Data User Khusus Admin
-      description: Header auth for admin only
-      operationId: GetdataUser
+        - data
+      summary: Get Data Geojson
+      description: Header auth 
+      operationId: GetdataGeojson
       responses:
         '200':
           description: successful operation
@@ -109,9 +134,6 @@ components:
         password:
           type: string
           example: cihuypaswort
-        role:
-          type: string
-          example: user
     Response:
       type: object
       properties:
@@ -151,6 +173,18 @@ components:
         password:
           type: string
           example: cihuypasworthash
+    bodycord:
+      type: object
+      properties:
+        type:
+          type: string
+          example: polygon
+        name:
+          type: string
+          example: rofi
+        volume:
+          type: string
+          example: "1"
     AuthResponse:
       type: object
       properties:
